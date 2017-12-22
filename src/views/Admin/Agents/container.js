@@ -14,12 +14,12 @@ import { NavTabs } from 'components/NavTabs'
 import classes from './container.scss'
 
 const navbarSelector = createNavbarSelector()
-const activeNavbarSelector = createRouteDocumentTitleSelector()
+const documentTitleSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
   return {
     navbars: navbarSelector(props, props.i18n || _i18n),
-    title: activeNavbarSelector(props, props.i18n || _i18n)
+    title: documentTitleSelector(props, props.i18n || _i18n)
   }
 }
 
