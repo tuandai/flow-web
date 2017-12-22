@@ -18,14 +18,14 @@ const activeNavbarSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
   return {
-    navs: navbarSelector(props, props.i18n || _i18n),
+    navbars: navbarSelector(props, props.i18n || _i18n),
     title: activeNavbarSelector(props, props.i18n || _i18n)
   }
 }
 
 export class AdminAgentContainer extends PureComponent {
   static propTypes = {
-    navs: PropTypes.array.isRequired,
+    navbars: PropTypes.array.isRequired,
     title: PropTypes.string.isRequired,
     children: PropTypes.node,
 
@@ -38,11 +38,11 @@ export class AdminAgentContainer extends PureComponent {
 
   render () {
     const {
-      navs, title,
+      navbars, title,
       children
     } = this.props
     return <div>
-      <NavTabs className={classes.navbar} navs={navs} />
+      <NavTabs className={classes.navbar} navbars={navbars} />
       <DocumentTitle title={title}>
         {children}
       </DocumentTitle>

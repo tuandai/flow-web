@@ -12,7 +12,7 @@ export default class NavTabs extends Component {
     className: PropTypes.string,
     children: PropTypes.node,
 
-    navs: PropTypes.arrayOf(PropTypes.shape({
+    navbars: PropTypes.arrayOf(PropTypes.shape({
       key: PropTypes.string.isRequired,
       to: PropTypes.string.isRequired,
       title: PropTypes.string.isRequired,
@@ -21,12 +21,12 @@ export default class NavTabs extends Component {
 
   static defaultProps = {
     classNames: classes,
-    navs: [],
+    navbars: [],
   }
 
   renderMenus () {
-    const { navs } = this.props
-    return navs.map((nav) => <Nav
+    const { navbars } = this.props
+    return navbars.map((nav) => <Nav
       key={nav.key || nav.to}
       to={nav.to}
       onlyActiveOnIndex
