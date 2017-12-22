@@ -7,13 +7,10 @@ import { bindActionCreators } from 'redux'
 import autoCancel from 'react-promise-cancel'
 import { STATUS } from 'redux-http'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { actions } from 'redux/modules/credential'
 import { actions as alertActions } from 'redux/modules/alert'
-
-import DocumentTitle from 'react-document-title'
 
 import Loading from 'components/Loading'
 import {
@@ -54,7 +51,7 @@ export class AdminCredentialList extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('list'),
+    i18n: _i18n.createChild('list'),
   }
 
   state = {
@@ -89,13 +86,11 @@ export class AdminCredentialList extends Component {
 
   render () {
     const { loading } = this.props
-    return <DocumentTitle title='证书列表 · 控制台'>
-      <div>
-        {loading && <Loading />}
-        {!loading && this.renderToolBar()}
-        {!loading && this.renderList()}
-      </div>
-    </DocumentTitle>
+    return <div>
+      {loading && <Loading />}
+      {!loading && this.renderToolBar()}
+      {!loading && this.renderList()}
+    </div>
   }
 }
 

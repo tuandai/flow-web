@@ -1,54 +1,50 @@
 import React, { Component } from 'react'
-import { array, node, string, func } from 'prop-types'
+import PropTypes from 'prop-types'
 
-import createI18n from './i18n'
-import language from 'util/language'
+import _i18n from './i18n'
 
 import { connect } from 'react-redux'
-import { createSelector } from 'reselect'
 
-import { NavTabs, Nav } from 'components/NavTabs'
+import {
+  createNavbarSelector,
+  createRouteDocumentTitleSelector
+} from 'util/route'
+
+import DocumentTitle from 'react-document-title'
+import { NavTabs } from 'components/NavTabs'
 
 import classes from './container.scss'
 
-const navbarSelectors = createSelector(
-  (props) => props.route.childRoutes,
-  (routes) => routes.filter((route) => route.navbar)
-)
+const navbarSelector = createNavbarSelector()
+const documentTitleSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
-  const navbars = navbarSelectors(props)
+  const navbars = navbarSelector(props, props.i18n || _i18n)
   return {
-    menus: navbars,
+    navbars,
+    title: documentTitleSelector(props, props.i18n || _i18n)
   }
 }
 
 export class AdminCredentialContainer extends Component {
   static propTypes = {
-    menus: array.isRequired,
-    children: node,
-
-    base: string.isRequired,
-    i18n: func.isRequired,
+    navbars: PropTypes.array.isRequired,
+    children: PropTypes.node,
+    title: PropTypes.string,
+    i18n: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   }
 
   static defaultProps = {
-    base: '/admin/credentials',
-    i18n: createI18n(language),
+    i18n: _i18n,
   }
 
   render () {
-    const { i18n, base, menus, children } = this.props
+    const { navbars, title, children } = this.props
     return <div>
-      <NavTabs className={classes.navbar}>
-        {menus.map((menu) => <Nav
-          key={menu.path}
-          to={`${base}/${menu.path}`}
-        >
-          {i18n(`${menu.path}.title`)}
-        </Nav>)}
-      </NavTabs>
-      {children}
+      <NavTabs className={classes.navbar} navbars={navbars} />
+      <DocumentTitle title={title}>
+        {children}
+      </DocumentTitle>
     </div>
   }
 }

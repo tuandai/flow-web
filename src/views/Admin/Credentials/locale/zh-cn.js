@@ -1,6 +1,7 @@
 export default {
   list: {
-    title: 'Credentials',
+    navbar: 'Credentials',
+    title: '证书列表 · 控制台',
     rsa: {
       title: 'RSA 证书 (:count)',
     },
@@ -9,7 +10,7 @@ export default {
     },
   },
   create: {
-    title: '添加 Credential',
+    navbar: '添加 Credential',
     IOS: {
       title: 'iOS'
     },

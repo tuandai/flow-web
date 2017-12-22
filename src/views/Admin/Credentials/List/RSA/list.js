@@ -4,8 +4,7 @@ import { list } from 'react-immutable-proptypes'
 
 import { connect } from 'react-redux'
 
-import createI18n from '../../i18n'
-import language from 'util/language'
+import _i18n from '../../i18n'
 import { Confirm } from 'components/Modal'
 import {
   List,
@@ -35,7 +34,7 @@ export class RSACredentialList extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('list.rsa'),
+    i18n: _i18n.createChild('list.rsa'),
   }
 
   state = {

@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -27,7 +26,7 @@ export class CreateCredentialForm extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('create'),
+    i18n: _i18n.createChild('create'),
   }
 
   handleCreate = (values) => {
