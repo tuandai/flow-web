@@ -1,54 +1,49 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 
+import _i18n from './i18n'
+
 import { connect } from 'react-redux'
-import { createNavbarSelector, createActiveNavbarSelector } from 'util/route'
+import {
+  createNavbarSelector,
+  createRouteDocumentTitleSelector
+} from 'util/route'
 
 import DocumentTitle from 'react-document-title'
-import { NavTabs, Nav } from 'components/NavTabs'
-
+import { NavTabs } from 'components/NavTabs'
 import classes from './container.scss'
 
 const navbarSelector = createNavbarSelector()
-const activeNavbarSelector = createActiveNavbarSelector()
+const activeNavbarSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
   return {
-    menus: navbarSelector(props),
-    activeMenu: activeNavbarSelector(props)
+    navs: navbarSelector(props, props.i18n || _i18n),
+    title: activeNavbarSelector(props, props.i18n || _i18n)
   }
 }
 
 export class AdminAgentContainer extends PureComponent {
   static propTypes = {
-    menus: PropTypes.array.isRequired,
-    activeMenu: PropTypes.shape({
-      navbar: PropTypes.string.isRequired,
-    }).isRequired,
+    navs: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
     children: PropTypes.node,
 
-    base: PropTypes.string.isRequired,
+    i18n: PropTypes.func.isRequired, // eslint-disable-line react/no-unused-prop-types
   }
 
   static defaultProps = {
-    base: '/admin/agents',
+    i18n: _i18n
   }
 
   render () {
     const {
-      base, menus,
-      activeMenu, children
+      navs, title,
+      children
     } = this.props
     return <div>
-      <NavTabs className={classes.navbar}>
-        {menus.map((menu) => {
-          const path = menu.path || ''
-          return <Nav key={path} to={`${base}/${path}`} onlyActiveOnIndex>
-            {menu.navbar}
-          </Nav>
-        })}
-      </NavTabs>
-      <DocumentTitle title={activeMenu.title}>
+      <NavTabs className={classes.navbar} navs={navs} />
+      <DocumentTitle title={title}>
         {children}
       </DocumentTitle>
     </div>
