@@ -1,59 +1,48 @@
 import React, { PureComponent } from 'react'
-import { array, node, string, bool, func } from 'prop-types'
+import PropTypes from 'prop-types'
 
-import createI18n from './i18n'
-import language from 'util/language'
+import _i18n from './i18n'
 
 import { connect } from 'react-redux'
-import { createSelector } from 'reselect'
 import { STATUS } from 'redux-http'
 
-import { NavTabs, Nav } from 'components/NavTabs'
+import {
+  createNavbarSelector,
+  createRouteDocumentTitleSelector
+} from 'util/route'
+
+import DocumentTitle from 'react-document-title'
+import { NavTabs } from 'components/NavTabs'
 import Loading from 'components/Loading'
 
 import classes from './container.scss'
 
-const navbarSelectors = createSelector(
-  (props) => props.route.childRoutes,
-  (routes) => routes.filter((route) => route.navbar)
-)
+const navbarSelector = createNavbarSelector()
+const documentTitleSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
   const { flow } = state
-  const navbars = navbarSelectors(props)
   return {
-    menus: navbars,
+    navbars: navbarSelector(props, _i18n),
+    title: documentTitleSelector(props, _i18n),
     loading: flow.getIn(['ui', 'QUERY']) !== STATUS.success,
   }
 }
 
 export class AdminFlowsContainer extends PureComponent {
   static propTypes = {
-    menus: array.isRequired,
-    loading: bool,
-    children: node,
-
-    base: string.isRequired,
-    i18n: func.isRequired,
-  }
-
-  static defaultProps = {
-    base: '/admin/flows',
-    i18n: createI18n(language),
+    navbars: PropTypes.array.isRequired,
+    title: PropTypes.string,
+    loading: PropTypes.bool,
+    children: PropTypes.node,
   }
 
   render () {
-    const { loading, i18n, base, menus, children } = this.props
+    const { loading, navbars, title, children } = this.props
     return <div>
-      <NavTabs className={classes.navbar}>
-        {menus.map((menu) => <Nav
-          key={menu.path}
-          to={`${base}/${menu.path}`}
-        >
-          {i18n(`${menu.path}.title`)}
-        </Nav>)}
-      </NavTabs>
-      {loading ? <Loading /> : children}
+      <NavTabs className={classes.navbar} navbars={navbars} />
+      {loading ? <Loading /> : <DocumentTitle title={title}>{children}
+      </DocumentTitle>}
     </div>
   }
 }

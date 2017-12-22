@@ -12,8 +12,6 @@ import { STATUS } from 'redux-http'
 import { actions } from 'redux/modules/member'
 import { actions as alertActions } from 'redux/modules/alert'
 
-import DocumentTitle from 'react-document-title'
-
 import Loading from 'components/Loading'
 import Button from 'components/Buttonx'
 import CheckboxGroup from 'rc-components/CheckboxGroup'
@@ -111,24 +109,22 @@ export class AdminFlowMembers extends Component {
   render () {
     const { members, loaded, i18n } = this.props
     const { selected } = this.state
-    return <DocumentTitle title='flow 成员管理 · 控制台'>
-      <div>
-        {!loaded && <Loading />}
-        {loaded && <CheckboxGroup className={classes.list}
-          value={selected} onChange={this.handleChecked}>
-          {members.map((member) => {
-            const n = member.get('username')
-            const email = member.get('email')
-            const label = `${n} ( ${email} )`
-            return <Checkbox key={n} value={email} label={label}
-              className={classes.checkbox} />
-          })}
-        </CheckboxGroup>}
-        {loaded && <Button type='primary' onClick={this.handleSave}>
-          {i18n('保存')}
-        </Button>}
-      </div>
-    </DocumentTitle>
+    return <div>
+      {!loaded && <Loading />}
+      {loaded && <CheckboxGroup className={classes.list}
+        value={selected} onChange={this.handleChecked}>
+        {members.map((member) => {
+          const n = member.get('username')
+          const email = member.get('email')
+          const label = `${n} ( ${email} )`
+          return <Checkbox key={n} value={email} label={label}
+            className={classes.checkbox} />
+        })}
+      </CheckboxGroup>}
+      {loaded && <Button type='primary' onClick={this.handleSave}>
+        {i18n('保存')}
+      </Button>}
+    </div>
   }
 }
 

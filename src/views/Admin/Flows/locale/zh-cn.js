@@ -1,6 +1,7 @@
 export default {
   list: {
-    title: '列表',
+    navbar: '列表',
+    title: 'flow 列表 · 控制台',
     toolbar: {
       all: '全部 ( :count ) '
     },
@@ -8,7 +9,8 @@ export default {
     copied: '复制成功',
   },
   members: {
-    title: 'flow 成员管理',
+    navbar: 'flow 成员管理',
+    title: 'flow 成员管理 · 控制台',
     toolbar: {
       all: '全部 ( :count ) '
     },

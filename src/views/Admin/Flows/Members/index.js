@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { func } from 'prop-types'
 import { list } from 'react-immutable-proptypes'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
@@ -36,7 +35,7 @@ export class AdminFlowMembersPanel extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('members'),
+    i18n: _i18n.createChild('members'),
   }
 
   state = {}

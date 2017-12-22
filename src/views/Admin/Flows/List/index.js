@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { func, string } from 'prop-types'
 import { iterable } from 'react-immutable-proptypes'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -11,8 +10,6 @@ import { createSelector } from 'reselect'
 
 import { actions } from 'redux/modules/flow'
 import { actions as alertActions } from 'redux/modules/alert'
-
-import DocumentTitle from 'react-document-title'
 
 import Input from 'rc-components/Input'
 import { Confirm } from 'components/Modal'
@@ -79,7 +76,7 @@ export class AdminFlowList extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('list'),
+    i18n: _i18n.createChild('list'),
     filter: '',
   }
 
@@ -177,21 +174,19 @@ export class AdminFlowList extends Component {
     const { selected, openConfirm } = this.state
     const confirmTitle = selected ? `确认删除 ${selected.get('name')} ?`
       : 'Confirm'
-    return <DocumentTitle title='flow 列表 · 控制台'>
-      <div>
-        {this.renderToolBars()}
-        <div className={classes.scroller}>
-          <List className={classes.flows}>
-            {this.renderListHeader()}
-            {this.renderFlows()}
-          </List>
-        </div>
-        <Confirm isOpen={openConfirm} title={confirmTitle}
-          onCancel={this.closeConfirm}
-          onOk={this.handleRemove}
-        />
+    return <div>
+      {this.renderToolBars()}
+      <div className={classes.scroller}>
+        <List className={classes.flows}>
+          {this.renderListHeader()}
+          {this.renderFlows()}
+        </List>
       </div>
-    </DocumentTitle>
+      <Confirm isOpen={openConfirm} title={confirmTitle}
+        onCancel={this.closeConfirm}
+        onOk={this.handleRemove}
+      />
+    </div>
   }
 }
 
