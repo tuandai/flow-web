@@ -13,7 +13,7 @@ export function createNavbarSelector () {
       const pattern = parentPattern.replace(/\/*$/, '/')
       return formatPattern(pattern, params)
     },
-    (props, i18n) => i18n || defaultI18n,
+    (props, i18n) => props.i18n || i18n || defaultI18n,
     (routes, baseUrl, i18n) => {
       const navbars = routes.filter((route) => route && route.navbar)
       return navbars.map((nav) => {
@@ -34,7 +34,7 @@ export function createRouteDocumentTitleSelector () {
   return createSelector(
     ({ routes, route }) => routes,
     ({ routes, route }) => route,
-    (props, i18n) => i18n || defaultI18n,
+    (props, i18n) => props.i18n || i18n || defaultI18n,
     (routes, route, i18n) => {
       const index = routes.findIndex((r) => r === route)
       if (index > -1) {
