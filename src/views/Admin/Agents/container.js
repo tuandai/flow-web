@@ -18,8 +18,8 @@ const documentTitleSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
   return {
-    navbars: navbarSelector(props, props.i18n || _i18n),
-    title: documentTitleSelector(props, props.i18n || _i18n)
+    navbars: navbarSelector(props, _i18n),
+    title: documentTitleSelector(props, _i18n)
   }
 }
 
