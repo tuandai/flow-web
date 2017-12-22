@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -16,8 +15,6 @@ import { actions as roleActions } from 'redux/modules/role'
 import { actions as alertActions } from 'redux/modules/alert'
 
 import { push } from 'react-router-redux'
-
-import DocumentTitle from 'react-document-title'
 
 import Form from './form'
 
@@ -62,7 +59,7 @@ export class CreateMember extends Component {
   }
 
   static defaultProps = {
-    i18n: createI18n(language).createChild('add'),
+    i18n: _i18n.createChild('add'),
   }
 
   componentDidMount () {
@@ -95,9 +92,7 @@ export class CreateMember extends Component {
   }
 
   render () {
-    return <DocumentTitle title='添加成员 · 控制台'>
-      <Form {...this.props} onSubmit={this.handleSubmit} />
-    </DocumentTitle>
+    return <Form {...this.props} onSubmit={this.handleSubmit} />
   }
 }
 

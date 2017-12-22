@@ -1,54 +1,43 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import createI18n from './i18n'
-import language from 'util/language'
+import _i18n from './i18n'
 
 import { connect } from 'react-redux'
-import { createSelector } from 'reselect'
+import {
+  createNavbarSelector,
+  createRouteDocumentTitleSelector
+} from 'util/route'
 
-import { NavTabs, Nav } from 'components/NavTabs'
+import DocumentTitle from 'react-document-title'
+import { NavTabs } from 'components/NavTabs'
 
 import classes from './container.scss'
 
-const navbarSelectors = createSelector(
-  (props) => props.route.childRoutes,
-  (routes) => routes.filter((route) => route.navbar)
-)
+const navbarSelector = createNavbarSelector()
+const documentTitleSelector = createRouteDocumentTitleSelector()
 
 function mapStateToProps (state, props) {
-  const navbars = navbarSelectors(props)
   return {
-    menus: navbars,
+    navbars: navbarSelector(props, _i18n),
+    title: documentTitleSelector(props, _i18n)
   }
 }
 
 export class AdminMembersContainer extends Component {
   static propTypes = {
-    menus: PropTypes.array.isRequired,
+    navbars: PropTypes.array.isRequired,
+    title: PropTypes.string.isRequired,
     children: PropTypes.node,
-
-    base: PropTypes.string.isRequired,
-    i18n: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    base: '/admin/members',
-    i18n: createI18n(language),
   }
 
   render () {
-    const { i18n, base, menus, children } = this.props
+    const { navbars, title, children } = this.props
     return <div>
-      <NavTabs className={classes.navbar}>
-        {menus.map((menu) => <Nav
-          key={menu.path}
-          to={`${base}/${menu.path}`}
-        >
-          {i18n(`${menu.path}.title`)}
-        </Nav>)}
-      </NavTabs>
-      {children}
+      <NavTabs className={classes.navbar} navbars={navbars} />
+      <DocumentTitle title={title}>
+        {children}
+      </DocumentTitle>
     </div>
   }
 }

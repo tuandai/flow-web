@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
-import createI18n from '../i18n'
-import language from 'util/language'
+import _i18n from '../i18n'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -14,8 +13,6 @@ import { STATUS } from 'redux-http'
 
 import { actions } from 'redux/modules/member'
 import { actions as alertActions } from 'redux/modules/alert'
-
-import DocumentTitle from 'react-document-title'
 
 import Loading from 'components/Loading'
 import Input from 'rc-components/Input'
@@ -112,7 +109,7 @@ export class AdminMemberList extends Component {
 
   static defaultProps = {
     pageSize: 100,
-    i18n: createI18n(language).createChild('list'),
+    i18n: _i18n.createChild('list'),
   }
 
   state = {
@@ -286,18 +283,16 @@ export class AdminMemberList extends Component {
   render () {
     const { loaded, i18n } = this.props
     const { confirm } = this.state
-    return <DocumentTitle title='成员列表 · 控制台'>
-      <div className={classes.container}>
-        {loaded && this.renderFilter()}
-        {loaded && <ActionBar i18n={i18n}
-          onRemove={this.openRemoveConfirm}
-          onChangRole={this.handleChangeRole}
-        />}
-        {loaded ? this.rendrMembers() : this.renderLoading()}
-        <Confirm title='确认删除?' isOpen={confirm}
-          onOk={this.handleRemove} onCancel={this.closeRemoveConfirm} />
-      </div>
-    </DocumentTitle>
+    return <div className={classes.container}>
+      {loaded && this.renderFilter()}
+      {loaded && <ActionBar i18n={i18n}
+        onRemove={this.openRemoveConfirm}
+        onChangRole={this.handleChangeRole}
+      />}
+      {loaded ? this.rendrMembers() : this.renderLoading()}
+      <Confirm title='确认删除?' isOpen={confirm}
+        onOk={this.handleRemove} onCancel={this.closeRemoveConfirm} />
+    </div>
   }
 }
 

@@ -1,13 +1,15 @@
 export default {
   list: {
-    title: '成员列表',
+    navbar: '成员列表',
+    title: '成员列表 · 控制台',
     filter: {
       ALL: '全部 (:count)',
       ADMIN: '管理员 (:count)',
     }
   },
   add: {
-    title: '添加成员',
+    navbar: '添加成员',
+    title: '添加成员 · 控制台',
     save: '添加成员',
     username: {
       label: '*用户名',
