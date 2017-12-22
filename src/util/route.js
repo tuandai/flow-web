@@ -39,6 +39,10 @@ export function createRouteDocumentTitleSelector () {
       const index = routes.findIndex((r) => r === route)
       if (index > -1) {
         const route = routes[index + 1] // next route
+        if (!route) {
+          console.error('unable get child route')
+          return undefined
+        }
         const i18nKey = route.i18n || route.path
         return i18n(`${i18nKey}.title`)
       }
