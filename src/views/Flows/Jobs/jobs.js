@@ -32,7 +32,14 @@ function mapStateToProps (state, props) {
   const { job, flow } = state
   const id = props.params.flowId
 
-  const status = job.getIn(['ui', 'QUERY'])
+  const ui = job.get('ui')
+  const status = ui.get('QUERY')
+
+  const pageSize = ui.get('pageSize') || 1
+  const pageNumber = ui.get('pageNumber') || 30
+  const totalSize = ui.get('totalSize') || 0
+
+  const hasMore = totalSize > pageNumber * pageSize
   return {
     key: id,
     flowId: id,
@@ -42,6 +49,8 @@ function mapStateToProps (state, props) {
 
     filter: job.getIn(['ui', 'filter']),
     loading: status !== STATUS.success,
+    pageNumber: pageNumber,
+    hasMore,
   }
 }
 
@@ -66,7 +75,9 @@ export class JobsView extends Component {
       pullRequest: PropTypes.bool,
     }).isRequired,
 
+    pageNumber: PropTypes.number.isRequired,
     loading: PropTypes.bool,
+    hasMore: PropTypes.bool,
 
     location: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
@@ -83,6 +94,7 @@ export class JobsView extends Component {
   static defaultProps = {
     filter: {},
     i18n: createI18n(language),
+    pageNumber: 1,
   }
 
   state = {
@@ -103,13 +115,14 @@ export class JobsView extends Component {
     this.isMount = false
   }
 
-  queryWithFilter (props = this.props, preJob) {
+  queryWithFilter (props = this.props, nextFilter = {}) {
     const { filter, query, flowId } = props
-    query(flowId, filter, preJob)
+    query(flowId, { ...filter, ...nextFilter })
   }
 
   handleMore = (e) => {
-    this.queryWithFilter(this.props)
+    const { pageNumber } = this.props
+    this.queryWithFilter(this.props, { pageNumber: pageNumber + 1 })
   }
 
   handleClick = (job) => {
@@ -173,7 +186,7 @@ export class JobsView extends Component {
   }
 
   renderContent () {
-    const { i18n, flowId, loading } = this.props
+    const { i18n, flowId, loading, hasMore } = this.props
     const { openBranchDialog } = this.state
     return <div className={classes.container}>
       {this.renderFlowHeader()}
@@ -184,7 +197,14 @@ export class JobsView extends Component {
         <Filter flowId={flowId} i18n={i18n} />
       </div>
       {this.renderJobs()}
-      {loading && this.renderLoading()}
+      <div className={classes.center}>
+        {loading && this.renderLoading()}
+        {hasMore && !loading && <Button className={classes.btnMore}
+          onClick={this.handleMore}
+        >
+          加载更多
+        </Button>}
+      </div>
       <BranchDialog flowId={flowId} isOpen={openBranchDialog}
         onRequestClose={this.closeBranchDialog}
         onBuild={this.handleCreateJob}

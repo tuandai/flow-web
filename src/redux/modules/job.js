@@ -39,8 +39,18 @@ function transformResponse (data) {
   return data
 }
 
+function transformPageResponse (data) {
+  if (is.object(data) && data.content) {
+    data.content = transformResponse(data.content)
+  }
+  return data
+}
+
 function getQueryParams (filter, getState) {
-  const { branch, keyword, onlySelf, pullRequest } = filter || {}
+  const {
+    branch, keyword, onlySelf,
+    pullRequest, pageNumber, pageSize
+   } = filter || {}
   const creator = onlySelf ? getState().session.getIn(['user', 'email']) : undefined
   const category = pullRequest ? 'PR' : undefined
 
@@ -49,38 +59,29 @@ function getQueryParams (filter, getState) {
     keyword,
     creator,
     category,
-  }
-}
-
-function queryAfterLastest (flowId, filter, lastestId) {
-  return function (dispatch, getState) {
-    const state = getState()
-    const job = state.job.getIn(['data', lastestId])
-    if (!job) {
-      return query(flowId, filter)
-    }
-    // do something other
-  }
-}
-
-function query (flowId, filter) {
-  return function (dispatch, getState) {
-    return dispatch({
-      url: '/jobs/:flowName',
-      name: Types.query,
-      params: {
-        flowName: flowId,
-        ...getQueryParams(filter, getState)
-      },
-      transformResponse: transformResponse,
-    })
+    number: pageNumber || 1,
+    size: pageSize || 30,
   }
 }
 
 export const actions = {
-  query: function (flowId, filter, lastestId) {
-    const fn = lastestId ? queryAfterLastest : query
-    return fn(flowId, filter, lastestId)
+  query: function (flowId, filter) {
+    return function (dispatch, getState) {
+      const params = getQueryParams(filter, getState)
+      return dispatch({
+        url: '/jobs/limit/:flowName',
+        name: Types.query,
+        params: {
+          flowName: flowId,
+          ...params,
+        },
+        indicator: {
+          pageNumber: params.number,
+          pageSize: params.size,
+        },
+        transformResponse: transformPageResponse,
+      })
+    }
   },
   queryLastest: function (flowIds) {
     return {
@@ -187,8 +188,20 @@ export const actions = {
 export default handleActions({
   [Types.query]: handleHttp('QUERY', {
     success: function (state, action) {
-      const nextState = initialState.update('ui', () => state.get('ui'))
-      return handlers.saveAll(nextState, action)
+      const {
+        payload: { content, totalSize },
+        indicator: { pageNumber, pageSize },
+      } = action
+      const nextState = (pageNumber === 1 ? initialState : state)
+        .update('ui', () => {
+          return state.get('ui').merge(fromJS({
+            pageNumber,
+            pageSize,
+            totalSize,
+          }))
+        })
+
+      return handlers.saveAll(nextState, { payload: content })
     }
   }),
   [Types.get]: handleHttp('GET', {
