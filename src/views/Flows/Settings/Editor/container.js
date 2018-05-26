@@ -15,9 +15,6 @@ import autoCancel from 'react-promise-cancel'
 import { actions } from 'redux/modules/step'
 import { push } from 'react-router-redux'
 
-import { Link } from 'react-router'
-import Steps from './Steps'
-
 import classes from './container.scss'
 
 const childRouteSelector = createSelector(
@@ -135,36 +132,17 @@ export class FlowEditorContainer extends Component {
 
   render () {
     const {
-      base, flowId, git,
-      steps, afterSteps,
-      name, active, isActiveAfterStep,
-      children, abstractStep,
-      redirect,
+      git,
+      name,
+      children,
     } = this.props
 
     return <div>
       <div className={classes.panel} onClick={this.handleClick}>
-        <Link to={`/flows/${flowId}/settings/editor/edit`}
-          onClick={this.stopPropagation}
-          className={classes.ymlLink}>
-          通过 yml 配置工作流
-        </Link>
         <div className={classes.header}>
           <h4 className={classes.title}>{name}</h4>
           <h5 className={classes.subTitle}>{git}</h5>
         </div>
-        <h5 className={classes.stepHeader}>Step</h5>
-        <Steps base={base} flowId={flowId}
-          steps={steps} active={active}
-          abstractStep={isActiveAfterStep ? undefined : abstractStep}
-          save={this.save} redirect={redirect}
-        />
-        <h5 className={classes.stepHeader}>After Step</h5>
-        <Steps base={base} flowId={flowId} isFinal
-          steps={afterSteps} active={isActiveAfterStep ? active : undefined}
-          abstractStep={isActiveAfterStep ? abstractStep : undefined}
-          save={this.save} redirect={redirect}
-        />
       </div>
       {children}
     </div>
