@@ -34,7 +34,7 @@ function mapStateToProps (state, { params: { flowId, git } }) {
     flowId,
     git,
     loaded: flow.getIn(['ui', flowId, 'GET']) === STATUS.success,
-    status: f && f.getIn(['envs', 'FLOW_STATUS'])
+    status: f && f.getIn(['status'])
     // isNotFound: flow.getIn(['ui', flowId]),
   }
 }

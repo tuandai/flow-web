@@ -8,7 +8,7 @@ export default {
   FLOW_AGENT_WORKSPACE: 'Agent 工作路径',
   FLOW_GIT_CREDENTIAL: 'Deploy key',
   GIT: {
-    UNDEFINED_SSH: '手动配置 Git 仓库',
-    UNDEFINED_HTTP: '手动配置 Git 仓库',
+    SSH: '手动配置 Git 仓库',
+    HTTP: '手动配置 Git 仓库',
   }
 }

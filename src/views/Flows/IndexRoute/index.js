@@ -42,13 +42,14 @@ export class FlowIndexRoute extends Component {
     if (!flow) {
       return
     }
-    const status = flow.getIn(['envs', 'FLOW_STATUS'])
+    const status = flow.getIn(['status'])
 
     if (status === 'READY') {
       redirect(`/flows/${flowId}/jobs`)
-    } else {
-      redirect(`/create/${flowId}`)
+      return
     }
+
+    redirect(`/create/${flowId}`)
   }
 
   render () {

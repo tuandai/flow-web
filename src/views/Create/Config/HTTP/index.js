@@ -19,6 +19,7 @@ function mapStateToProps (state, { flowId }) {
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
     done: actions.doneCreate,
+    changeStatus: actions.changeStatus
   }, dispatch)
 }
 
@@ -30,16 +31,18 @@ export class HTTPConfig extends Component {
     git: PropTypes.string,
 
     done: PropTypes.func.isRequired,
+    changeStatus: PropTypes.func.isRequired,
     i18n: PropTypes.func.isRequired,
   }
 
   getGitSource () {
     const { git } = this.props
-    return git ? git.toUpperCase() : 'UNDEFINED_HTTP'
+    return git ? git.toUpperCase() : 'HTTP'
   }
 
   handleSubmit = (values) => {
-    const { done, flowId } = this.props
+    const { done, flowId, changeStatus } = this.props
+    changeStatus('READY')
     return done(flowId, values)
   }
 

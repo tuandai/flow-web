@@ -35,7 +35,7 @@ const job = {
       FLOW_GIT_URL: 'git@github.com: flow-ci-plugin/for-testing.git',
       FLOW_GIT_COMPARE_ID: '1234..12121',
       FLOW_GIT_CHANGELOG: 'test',
-      FLOW_GIT_SOURCE: 'UNDEFINED_SSH',
+      FLOW_GIT_SOURCE: 'SSH',
       FLOW_GIT_WEBHOOK: 'http://localhost:8088/hooks/git/flow-integration',
     },
     status: 'FAILURE',

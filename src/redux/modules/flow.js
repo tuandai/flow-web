@@ -87,6 +87,7 @@ function getCreateEnv (params) {
     FLOW_GIT_SOURCE: source,
     FLOW_GIT_URL: url,
   }
+
   if (type === 'SSH') {
     env.FLOW_GIT_CREDENTIAL = deploy
   } else if (type === 'HTTP') {
@@ -131,6 +132,21 @@ export const actions = {
       transformResponse,
     }
   },
+  changeStatus: function (flowId, status) {
+    return {
+      url: '/flows/:flowName/status/:status',
+      method: 'patch',
+      name: Types.changeStatus,
+      params: {
+        flowName: flowId,
+        status
+      },
+      indicator: {
+        id: flowId
+      },
+      transformResponse,
+    }
+  },
   remove: function (flowId) {
     return {
       url: '/flows/:flowName',
@@ -149,7 +165,7 @@ export const actions = {
     return {
       url: '/flows/:flowName/env',
       name: Types.updateEnv,
-      method: 'post',
+      method: 'patch',
       params: {
         flowName: flowId,
         ...env,
@@ -177,7 +193,6 @@ export const actions = {
    */
   doneCreate: function (flowId, params) {
     return actions.updateEnv(flowId, {
-      FLOW_STATUS: 'READY',
       ...getCreateEnv(params)
     })
   },

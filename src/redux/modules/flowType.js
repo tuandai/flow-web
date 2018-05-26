@@ -4,7 +4,7 @@ export default {
   create: 'FLOW_CREATE',
   remove: 'FLOW_DELETE',
   updateEnv: 'FLOW_ENV_UPDATE',
-
+  changeStatus: 'FLOW_CHANGE_STATUS',
   loadYml: 'FLOW_LOAD_YML',
   pollingEnv: 'FLOW_POLLING_ENV',
 
