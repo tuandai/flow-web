@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux'
 import { actions } from 'redux/modules/flow'
 import Editor from 'components/CodeEditor'
 import Button from 'components/Buttonx'
-import Header from '../components/Header'
 
 import classes from './yml.scss'
 function mapStateToProps (state, props) {
@@ -72,14 +71,11 @@ export class FlowYmlSetting extends Component {
     const { yml } = this.props
     const { text } = this.state
     return <div>
-      <Header title='配置 YML 工作流'
-        subTitle='点击查看 YML 文件编写文档（内含 Demo）' />
       <div className={classes.editorwrap}>
         <Editor className={classes.editor} value={text}
           onChange={this.handleEditorChange} />
         <Button type='primary' disabled={yml === text}
-          onClick={this.handleSave}
-        >
+          onClick={this.handleSave}>
           保存
         </Button>
       </div>
