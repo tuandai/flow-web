@@ -14,15 +14,21 @@ const initialState = fromJS({
   ui: {},
 })
 
+const getAgentIdFromPath = function (agent) {
+  return agent.path.zone + '-' + agent.path.name
+}
+
 const transformResponse = function (data) {
   if (is.array(data)) {
-    data.forEach((d) => {
-      d.id = d.zoneWithName
+    data.forEach((item) => {
+      item.id = getAgentIdFromPath(item)
     })
-  } else if (is.object(data)) {
-    data.id = data.zoneWithName
+    return data
   }
-  return data
+  if (is.object(data)) {
+    data.id = getAgentIdFromPath(data)
+    return data
+  }
 }
 
 export const actions = {
