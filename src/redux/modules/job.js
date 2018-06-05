@@ -17,7 +17,7 @@ export function generatorJobId (flowId, jobNumber) {
 }
 
 function transform (d) {
-  d.id = generatorJobId(d.nodePath, d.number)
+  d.id = generatorJobId(d.name, d.key.number)
   if (d.childrenResult) {
     d.childrenResult.forEach((node) => {
       node.jobId = d.id

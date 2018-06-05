@@ -51,7 +51,7 @@ export class JobItem extends Component {
       <JobIcon status={status} colored />
       <div className={classes.info}>
         <h4>
-          #{job.get('number')}&nbsp;&nbsp;
+          #{job.get('key').get('number')}&nbsp;&nbsp;
           {envs.get('FLOW_GIT_BRANCH')}
         </h4>
         <small>

@@ -116,7 +116,7 @@ export class JobsView extends Component {
     const { redirect, location, params } = this.props
     redirect({
       ...location,
-      pathname: `/flows/${params.flowId}/jobs/${job.get('number')}`
+      pathname: `/flows/${params.flowId}/jobs/${job.get('key').get('number')}`
     })
   }
 
