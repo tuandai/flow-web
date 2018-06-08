@@ -176,7 +176,7 @@ export const actions = {
   /**
    * 如果是已经存过的 job 或者是新 job 则保存，否则丢弃
    */
-  saveOrdiscarded: function (job) {
+  saveOrDiscard: function (job) {
     return {
       type: Types.socketRecived,
       payload: transformResponse(job),
@@ -199,14 +199,15 @@ export default handleActions({
   }),
   [Types.socketRecived]: function (state, { payload }) {
     const job = { ...payload, childrenResult: undefined }
-    const { id, number } = job
+    const number = job.key.number
+    const id = generatorJobId(job.name, number)
     const old = state.getIn(['data', id])
     if (old) {
       return handlers.saveData(state, { payload: job })
     }
     const lastId = state.get('list').last()
     const last = state.getIn(['data', lastId])
-    const lastNumber = last ? last.get('number') : 0
+    const lastNumber = last ? last.get('key').get('number') : 0
     if (lastNumber < number) {
       // save to top list
       return handlers.unshift(state, { payload: job })

@@ -16,7 +16,7 @@ function mapStateToProps (state, props) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    onMessage: actions.saveOrdiscarded,
+    onMessage: actions.saveOrDiscard,
   }, dispatch)
 }
 
