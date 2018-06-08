@@ -101,7 +101,7 @@ export default {
     const j = getJobWithChildrenResult(jobNumber)
     return { ...j, nodeName: flowName, nodePath: flowName, number: jobNumber }
   },
-  [types.queryLastest]: function ({ data: flowNames }) {
+  [types.queryLatest]: function ({ data: flowNames }) {
     return flowNames.map((name) => Object.assign({}, job, {
       nodeName: name,
       nodePath: name

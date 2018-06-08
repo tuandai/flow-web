@@ -36,7 +36,8 @@ export class JobStatusHeader extends Component {
 
   handleStop = () => {
     const { stop, flowId, job } = this.props
-    return stop(flowId, job.get('number'))
+    const buildNumber = job.get('key').get('number')
+    return stop(flowId, buildNumber)
   }
 
   renderActions () {

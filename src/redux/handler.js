@@ -21,6 +21,10 @@ export function saveToData (state, { payload }, options) {
 }
 
 export function saveAllToData (state, { payload }, options) {
+  if (payload === undefined) {
+    return
+  }
+
   const d = payload.reduce((s, data) => {
     s[getId(data, options)] = data
     return s
@@ -35,6 +39,10 @@ export function saveToList (state, { payload }, options = {}) {
 }
 
 export function saveAllToList (state, { payload }, options = {}) {
+  if (payload === undefined) {
+    return
+  }
+
   const ids = payload.map((data) => getId(data, options))
   const set = new OrderedSet(ids)
   return state.update('list', (list) => list.union(set))

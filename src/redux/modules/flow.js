@@ -10,6 +10,7 @@ import { defaultInitState, handlers } from 'redux/handler'
 
 import Types from './flowType'
 import JobTypes from './jobType'
+import { generatorJobId } from './job'
 
 /**
  * {
@@ -395,10 +396,11 @@ export default handleActions({
   },
 
   // Job Type
-  [JobTypes.queryLastest]: handleHttp('QUERY_LAST_JOBS', {
+  [JobTypes.queryLatest]: handleHttp('QUERY_LAST_JOBS', {
     success: function (state, { payload: jobs }) {
       const f = jobs.reduce((s, job) => {
-        s[job.nodeName] = job
+        job.id = generatorJobId(job.name, job.key.number)
+        s[job.name] = job
         return s
       }, {})
       return state.set('status', fromJS(f))

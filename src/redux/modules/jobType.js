@@ -4,7 +4,7 @@ export default {
   stop: 'JOB_STOPPED',
   getYml: 'JOB_GET_YML',
   queryArtifact: 'JOB_QUERY_ARTIFACT',
-  queryLastest: 'JOB_QUERY_FLOWS_LASTEST',
+  queryLatest: 'JOB_QUERY_FLOWS_LATEST',
   updateFilter: 'JOB_FILTER_UPDATE',
   freedFilter: 'JOB_FILTER_FREED',
   freedAll: 'JOB_FREED_ALL',

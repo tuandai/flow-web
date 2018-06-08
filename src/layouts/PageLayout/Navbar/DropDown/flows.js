@@ -50,7 +50,7 @@ function mapStateToProps (state, props) {
 
 function mapDispatchToProps (dispatch) {
   return bindActionCreators({
-    queryLastJob: jobActions.queryLastest,
+    queryLastJob: jobActions.queryLatest,
     setFilter: actions.setFilter,
     freedFilter: actions.freedFilter,
   }, dispatch)

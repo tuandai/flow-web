@@ -52,10 +52,10 @@ function getQueryParams (filter, getState) {
   }
 }
 
-function queryAfterLastest (flowId, filter, lastestId) {
+function queryAfterLatest (flowId, filter, latestId) {
   return function (dispatch, getState) {
     const state = getState()
-    const job = state.job.getIn(['data', lastestId])
+    const job = state.job.getIn(['data', latestId])
     if (!job) {
       return query(flowId, filter)
     }
@@ -78,13 +78,13 @@ function query (flowId, filter) {
 }
 
 export const actions = {
-  query: function (flowId, filter, lastestId) {
-    const fn = lastestId ? queryAfterLastest : query
-    return fn(flowId, filter, lastestId)
+  query: function (flowId, filter, latestId) {
+    const fn = latestId ? queryAfterLatest : query
+    return fn(flowId, filter, latestId)
   },
-  queryLastest: function (flowIds) {
+  queryLatest: function (flowIds) {
     return {
-      name: Types.queryLastest,
+      name: Types.queryLatest,
       url: 'jobs/status/latest',
       method: 'post',
       data: flowIds,
@@ -188,12 +188,20 @@ export default handleActions({
   [Types.query]: handleHttp('QUERY', {
     success: function (state, action) {
       const nextState = initialState.update('ui', () => state.get('ui'))
+      const jobs = action.payload
+
+      // init job id for job list
+      for (let job of jobs) {
+        job.id = generatorJobId(job.name, job.key.number)
+      }
+
       return handlers.saveAll(nextState, action)
     }
   }),
   [Types.get]: handleHttp('GET', {
     success: function (state, { payload }) {
       const job = { ...payload, childrenResult: undefined }
+      job.id = generatorJobId(job.name, job.key.number)
       return handlers.saveData(state, { payload: job })
     },
   }),
